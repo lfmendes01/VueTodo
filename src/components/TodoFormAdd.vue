@@ -20,30 +20,37 @@ focus:outline-none"
                 </button>
             </form>
 </template>
-<script>
-    export default {
-        data(){
-            return {
-                title:''
-            }
-        },
-        methods:{
-            addTodo(){
 
-                if(!this.title)
+
+<script>
+    import { ref } from 'vue';
+    import { useStore } from 'vuex';
+
+    export default {
+        setup()
+        {
+            const title = ref();
+            const store = useStore();
+
+            const addTodo = ()=> {
+                if(!title.value)
                 {
                     return false;
                 }
 
-                this.$store.dispatch('addTodo',
+                store.dispatch('addTodo',
                 {
-                    title:this.title,
+                    title:title.value,
                     completed:false
                 }).finally(
                     ()=>{
-                        this.title='';
+                        title.value='';
                     }
                 );
+            };
+
+            return {
+                title, addTodo
             }
         },
     }
